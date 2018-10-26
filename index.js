@@ -3,10 +3,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request'); //dodao 
-const hbs = require('express-handlebars').create({});
 const app = express();
 
-const products = require('./products');
+const hbs = require('express-handlebars').create({});
+
+const products = require('./products'); 
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -87,9 +88,10 @@ app.post('/webhook', function (req, res) {
 
   app.get('/products/:productId', function (req, res) {
     const productId = req.params.productId;
-    const product = products.find(product => product.id === productId);
+    const product = products.find(p => p.id === productId);
     if (product) {
-      res.render('product', product)
+      // res.render('product', product)
+      res.status(200).send({product})
     } else {
       res.status(404).send({ code: 404, messasge: 'NOT_FOUND' });
     }
