@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request'); //dodao 
+const _ = require('loadash');
 
 const app = express();
 
