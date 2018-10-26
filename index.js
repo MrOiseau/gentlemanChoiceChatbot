@@ -90,7 +90,7 @@ app.post('/webhook', function (req, res) {
     const productId = req.params.productId;
     const product = products.find(p => p.id === productId);
     if (product) {
-      res.render('product', product)
+      res.render('product.handlebars', product)
       // res.status(200).send({product})
     } else {
       res.status(404).send({ code: 404, messasge: 'NOT_FOUND' });
