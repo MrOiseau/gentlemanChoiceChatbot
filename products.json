@@ -1,0 +1,82 @@
+[
+    {
+      "id": "1",
+      "name": "Stripes T-shirt",
+      "description": "White and blue stripes t-shirt",
+      "gender": "M",
+      "price": 100.00,
+      "availableSizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Stripes T-shirt",
+      "description": "White and blue stripes t-shirt",
+      "gender": "W",
+      "price": 100.00,
+      "availableSizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Dotted T-shirt",
+      "description": "White and red dotted t-shirt",
+      "gender": "M",
+      "price": 90.00,
+      "availableSizes": [
+        "S",
+        "M",
+        "L"
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Dotted T-shirt",
+      "description": "White and red dotted t-shirt",
+      "gender": "W",
+      "price": 90.00,
+      "availableSizes": [
+        "S",
+        "M",
+        "L"
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Plain T-shirt",
+      "description": "Blue plain t-shirt",
+      "gender": "M",
+      "price": 60.00,
+      "availableSizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Plain T-shirt",
+      "description": "Blue plain t-shirt",
+      "gender": "W",
+      "price": 60.00,
+      "availableSizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
+    }
+  ]
