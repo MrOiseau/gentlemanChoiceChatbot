@@ -90,8 +90,8 @@ app.post('/webhook', function (req, res) {
     const productId = req.params.productId;
     const product = products.find(p => p.id === productId);
     if (product) {
-      // res.render('product', product)
-      res.status(200).send({product})
+      res.render('product', product)
+      // res.status(200).send({product})
     } else {
       res.status(404).send({ code: 404, messasge: 'NOT_FOUND' });
     }
@@ -103,7 +103,7 @@ app.post('/webhook', function (req, res) {
     if (query.gender) {
       filteredProducts = filteredProducts.filter(product => product.gender === query.gender);
     }
-  
+
     if (query.size) {
       filteredProducts = filteredProducts.filter(product => {
         const availableSizes = product.availableSizes;
