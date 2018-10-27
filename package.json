@@ -13,11 +13,13 @@
   "author": "Nikola Bijanic",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
     "loadash": "^1.0.0",
     "nodemon": "^1.18.5",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "utf8": "^3.0.0"
   }
 }

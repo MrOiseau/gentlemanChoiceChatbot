@@ -3,7 +3,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request'); //dodao 
-const app = express();
+//const app = express();
+const app = require('express')(); //
+const botEngine = require('./src/bot-engine'); //
+
+const VALIDATION_TOKEN = 'gentlemanchoicebottoken'; //
+
+//res.setHeader("Content-Type", "application/json; charset=utf-8"); //ja dodao za utf-8
 
 const hbs = require('express-handlebars').create({});
 
@@ -29,18 +35,18 @@ app.get('/', function (req, res) {
     res.status(200).send('Zdravo! Ja sam četbot. Napiši mi nešto.')
 });
 
-// for Facebook verification
-app.get('/webhook/', function (req, res) {
-    console.log(req)
-    if (req.query['hub.verify_token'] === 'gentlemanchoicebottoken'  ) {
-        res.send(req.query['hub.challenge'])
-    }
-    res.send('Error, wrong token')
+// for Facebook verification //
+app.get('/webhook', function (req, res) {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+      res.status(200).send(req.query['hub.challenge']);
+  } else {
+      res.sendStatus(403);
+  }
 });
 
 // Spin up the server
 app.listen(app.get('port'), function() {
-    console.log('Server running on port', app.get('port'))
+    console.log('Aplikacija je pokrenuta na portu', app.get('port'))
 });
 
 
@@ -72,6 +78,7 @@ app.post('/webhook', function (req, res) {
       // you've successfully received the callback. Otherwise, the request
       // will time out and Facebook Messenger Platform will keep trying to resend.
       
+      botEngine.handleIncomingMessage(req.body.entry); //
       res.sendStatus(200);
       //res.status(200).send();
     }
@@ -112,6 +119,14 @@ app.post('/webhook', function (req, res) {
     }
     return filteredProducts;
   }
+
+
+
+
+
+ 
+  
+
 
 
 
