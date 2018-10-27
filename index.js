@@ -52,6 +52,7 @@ app.listen(app.get('port'), function() {
 
 
 app.post('/webhook', function (req, res) {
+    /* da probam za chapter 3 izmene
     var data = req.body;
     // console.log(data.object)
     // Make sure this is a page subscription
@@ -71,6 +72,7 @@ app.post('/webhook', function (req, res) {
           }
         });
       });
+      */
   
       // Everything went well.
       //
@@ -81,7 +83,7 @@ app.post('/webhook', function (req, res) {
       botEngine.handleIncomingMessage(req.body.entry); //
       res.sendStatus(200);
       //res.status(200).send();
-    }
+    //}
   });
   
   function receivedMessage(event) {
@@ -123,10 +125,10 @@ app.post('/webhook', function (req, res) {
 
 
 
-
  
   
 
 
 
 
+ 
