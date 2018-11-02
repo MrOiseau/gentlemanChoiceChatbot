@@ -8,6 +8,7 @@ const postMessage = (recipientId, message) => {
   console.log("FB_MESSENGER_URL:", FB_MESSENGER_URL)
   console.log("recipientId", recipientId)
   console.log("message", message)
+  console.log("PAGE_ACCESS_TOKEN", PAGE_ACCESS_TOKEN)
   return axios.post(FB_MESSENGER_URL, {
     recipient: { id: recipientId }, message
   })
