@@ -16,7 +16,7 @@ const postMessage = (recipientId, message) => {
 const handleIncomingMessage = (entries) => {
  
   entries.forEach(function (entry) {
-    let sender = entry.sender.id
+    let sender = entry.id
     entry.messaging.forEach(function (event) {
       console.log("dkasldksldaksdl;asdl;askdl",event)
       if (event.postback) {
