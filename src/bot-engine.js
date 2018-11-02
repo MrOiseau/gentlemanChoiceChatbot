@@ -16,13 +16,13 @@ const postMessage = (recipientId, message) => {
 const handleIncomingMessage = (entries) => {
  
   entries.forEach(function (entry) {
-    let sender = entry.id
     entry.messaging.forEach(function (event) {
-      console.log("dkasldksldaksdl;asdl;askdl",event)
+      let sender = event.sender.id
       if (event.postback) {
         const { payload } = event.postback;
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
-        postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
+          console.log("dkasldksldaksdl;asdl;askdl",payload)
+            postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
         }
       }
     });
