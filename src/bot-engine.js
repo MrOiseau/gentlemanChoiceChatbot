@@ -14,6 +14,7 @@ const postMessage = (recipientId, message) => {
 }
 
 const handleIncomingMessage = (entries) => {
+ 
   entries.forEach(function (entry) {
     entry.messaging.forEach(function (event) {
       let sender = event.sender.id

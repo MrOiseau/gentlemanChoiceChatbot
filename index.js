@@ -32,11 +32,14 @@ app.set('view engine', 'handlebars');
 
 // Index route
 app.get('/', function (req, res) {
+  
     res.status(200).send('Zdravo! Ja sam četbot. Napiši mi nešto.')
 });
 
 // for Facebook verification //
 app.get('/webhook', function (req, res) {
+  console.log("BODY111", req.body)
+  console.log("PARAMS111", req.param)
   if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VALIDATION_TOKEN) {
       res.status(200).send(req.query['hub.challenge']);
   } else {
@@ -52,8 +55,8 @@ app.listen(app.get('port'), function() {
 
 
 app.post('/webhook', function (req, res) {
-  console.log(req.body)
-  console.log(req.param)
+  console.log("BODY", req.body)
+  console.log("PARAMS", req.param)
     /* da probam za chapter 3 izmene
     var data = req.body;
     // console.log(data.object)
@@ -82,8 +85,8 @@ app.post('/webhook', function (req, res) {
       // you've successfully received the callback. Otherwise, the request
       // will time out and Facebook Messenger Platform will keep trying to resend.
       
-      botEngine.handleIncomingMessage(req.body.entry); 
       res.sendStatus(200);
+      botEngine.handleIncomingMessage(req.body.entry); 
       //res.status(200).send();
     //}
   });
