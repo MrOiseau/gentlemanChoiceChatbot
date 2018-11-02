@@ -6,10 +6,6 @@ const BASE_FB_URL = 'https://graph.facebook.com/v2.6';
 const FB_MESSENGER_URL = `${BASE_FB_URL}/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
 
 const postMessage = (recipientId, message) => {
-  console.log("FB_MESSENGER_URL:", FB_MESSENGER_URL)
-  console.log("recipientId", recipientId)
-  console.log("message", message)
-  console.log("PAGE_ACCESS_TOKEN", PAGE_ACCESS_TOKEN)
   return axios.post(FB_MESSENGER_URL, {
     recipient: { id: recipientId }, message
   })
@@ -21,6 +17,7 @@ const postMessage = (recipientId, message) => {
 const handleIncomingMessage = (entries) => {
  
   entries.forEach(function (entry) {
+    console.log(entry)
     entry.messaging.forEach(function (event) {
       let sender = event.sender.id
       if (event.postback) {
@@ -28,7 +25,9 @@ const handleIncomingMessage = (entries) => {
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
             postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
         }
+
       }
+
     });
   });
 }
