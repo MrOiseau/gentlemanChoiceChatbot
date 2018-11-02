@@ -52,6 +52,8 @@ app.listen(app.get('port'), function() {
 
 
 app.post('/webhook', function (req, res) {
+  console.log(req.body)
+  console.log(req.param)
     /* da probam za chapter 3 izmene
     var data = req.body;
     // console.log(data.object)
@@ -80,7 +82,7 @@ app.post('/webhook', function (req, res) {
       // you've successfully received the callback. Otherwise, the request
       // will time out and Facebook Messenger Platform will keep trying to resend.
       
-      botEngine.handleIncomingMessage(req.body.entry); //
+      botEngine.handleIncomingMessage(req.body.entry); 
       res.sendStatus(200);
       //res.status(200).send();
     //}

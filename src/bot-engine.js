@@ -21,7 +21,7 @@ const handleIncomingMessage = (entries) => {
       if (event.postback) {
         const { payload } = event.postback;
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
-        postMessage(sender, { text: `Zdravo! Dobrodošli u našu prodavnicu!` });
+        postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
         }
       }
     });
