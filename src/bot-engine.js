@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const PAGE_ACCESS_TOKEN = "EAACZCtG0mQYcBAOwZC9hgfxZB5xRvqftpOYqeKyLCrKczqs7mdhniTZAcsZBPGajYUJ1WV2ujcAAn7YsHm5xAMtYviKZALHiYg4ThwhwXvo3NpgZBQZCZC9T01KeywJZAugwpKeNa0RLOMPiv0iVU1afP5bpSTj8em8iEIcEErZByXZAGgZDZD"
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+// const PAGE_ACCESS_TOKEN = "EAACZCtG0mQYcBAOwZC9hgfxZB5xRvqftpOYqeKyLCrKczqs7mdhniTZAcsZBPGajYUJ1WV2ujcAAn7YsHm5xAMtYviKZALHiYg4ThwhwXvo3NpgZBQZCZC9T01KeywJZAugwpKeNa0RLOMPiv0iVU1afP5bpSTj8em8iEIcEErZByXZAGgZDZD"
 const BASE_FB_URL = 'https://graph.facebook.com/v2.6';
 const FB_MESSENGER_URL = `${BASE_FB_URL}/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
 
