@@ -16,9 +16,9 @@ const postMessage = (recipientId, message) => {
 const handleIncomingMessage = (entries) => {
  
   entries.forEach(function (entry) {
+    let sender = entry.sender.id
     entry.messaging.forEach(function (event) {
-      let sender = event.sender.id
-
+      console.log("dkasldksldaksdl;asdl;askdl",event)
       if (event.postback) {
         const { payload } = event.postback;
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
