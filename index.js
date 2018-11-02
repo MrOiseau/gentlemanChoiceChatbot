@@ -55,9 +55,6 @@ app.listen(app.get('port'), function() {
 
 
 app.post('/webhook', function (req, res) {
-  console.log("BODY", req.body)
-  console.log("BODYYYY", req.body.entry.messaging)
-  console.log("PARAMS", req.param)
     /* da probam za chapter 3 izmene
     var data = req.body;
     // console.log(data.object)
