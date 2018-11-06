@@ -38,8 +38,7 @@ app.get('/', function (req, res) {
 
 // for Facebook verification //
 app.get('/webhook', function (req, res) {
-  console.log("BODY111", req.body)
-  console.log("PARAMS111", req.param)
+  //console.log("query", req.query)
   if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === VALIDATION_TOKEN) {
       res.status(200).send(req.query['hub.challenge']);
   } else {
@@ -56,8 +55,7 @@ app.listen(app.get('port'), function() {
 
 app.post('/webhook', function (req, res) {
   // console.log(req)
-  console.log(req.body.entry[0].messaging)
-  console.log(req.body)
+  // console.log(req.body.entry[0])
     /* da probam za chapter 3 izmene
     var data = req.body;
     // console.log(data.object)
@@ -104,8 +102,18 @@ app.post('/webhook', function (req, res) {
   app.get('/products/:productId', function (req, res) {
     const productId = req.params.productId;
     const product = products.find(p => p.id === productId);
+    // for(i = 0; i< products.listen; i++){
+    //   if(products[i].id === productId){
+    //     return products[i]
+    //   }
+    // }
+    // const product = products.find(function(p){
+    //   if(p.id === productId)
+    //     return p;
+    // });
+
     if (product) {
-      res.render('product.handlebars', product)
+      res.status(200).render('product.handlebars', product)
       // res.status(200).send({product})
     } else {
       res.status(404).send({ code: 404, messasge: 'NOT_FOUND' });

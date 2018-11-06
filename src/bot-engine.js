@@ -17,24 +17,35 @@ const postMessage = (recipientId, message) => {
 const handleIncomingMessage = (entries) => {
  
   entries.forEach(function (entry) {
-    console.log(entry)
     entry.messaging.forEach(function (event) {
       let sender = event.sender.id
       if (event.postback) {
         const { payload } = event.postback;
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
-            postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
+          const userDetails = retrieveUserDetails(sender).
+            then(response => {
+              const firstName = response.data.first_name;
+              //postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
+              postMessage(sender, { text: 'Zdravo ${firstName}, dobrodošli u našu prodavnicu!' });
+              
+            });
         }
 
       }
 
     });
   });
+
 }
 
 module.exports = {
   handleIncomingMessage
 }
 
-
-
+//pravimo get request da bismo izvukli korisnikovo ime
+const retrieveUserDetails = (userId) => {
+  return axios.get(`${BASE_FB_URL}/${userId}?fields=first_name&access_token=${PAGE_ACCESS_TOKEN}`)
+    .catch(function (error) {
+      console.error(`Unable to user details ${userId}`, error);
+    });
+}
