@@ -24,9 +24,9 @@ const handleIncomingMessage = (entries) => {
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
           const userDetails = retrieveUserDetails(sender).
             then(response => {
-              const firstName = response.data.name;
+              const firstName = response.data.first_name;
               //postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
-              postMessage(sender, { text: 'Zdravo ${firstName}, dobrodošli u našu prodavnicu!' });
+              postMessage(sender, { text: `Zdravo ${firstName}, dobrodošli u našu prodavnicu!` });
               
             });
         }
@@ -44,7 +44,7 @@ module.exports = {
 
 //pravimo get request da bismo izvukli korisnikovo ime
 const retrieveUserDetails = (userId) => {
-  return axios.get(`${BASE_FB_URL}/${userId}?fields=name&access_token=${PAGE_ACCESS_TOKEN}`)
+  return axios.get(`${BASE_FB_URL}/${userId}?fields=first_name&access_token=${PAGE_ACCESS_TOKEN}`)
     .catch(function (error) {
       console.error(`Unable to user details ${userId}`, error);
     });
