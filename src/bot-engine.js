@@ -22,13 +22,14 @@ const handleIncomingMessage = (entries) => {
       if (event.postback) {
         const { payload } = event.postback;
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
-          const userDetails = retrieveUserDetails(sender).
-            then(response => {
-              const firstName = response.data.first_name;
-              //postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
-              postMessage(sender, { text: `Zdravo ${firstName}, dobrodošli u našu prodavnicu!` });
+          // const userDetails = retrieveUserDetails(sender).
+          //   then(response => {
+          //     const firstName = response.data.first_name;
+          //     //postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
+          //     postMessage(sender, { text: `Zdravo ${firstName}, dobrodošli u našu prodavnicu!` });
               
-            });
+          //   });
+          sendWelcomeMessage(sender);
         }
 
       }
@@ -47,5 +48,36 @@ const retrieveUserDetails = (userId) => {
   return axios.get(`${BASE_FB_URL}/${userId}?fields=first_name&access_token=${PAGE_ACCESS_TOKEN}`)
     .catch(function (error) {
       console.error(`Unable to user details ${userId}`, error);
+    });
+}
+
+//pravimo da welcome message bude strukturisana
+const sendWelcomeMessage = (sender) => {
+  const userDetails = retrieveUserDetails(sender).
+    then(response => {
+      const firstName = response.data.first_name;
+      const title = `Zdravo ${firstName}, dobrodošli u našu prodavnicu. Za šta ste zainteresovani danas?`;
+      const message = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'button',
+            text: title,
+            buttons:
+            [
+              {
+                type: 'postback',
+                title: 'Ženske',
+                payload: 'WOMEN_OPTION_SELECTED'
+              }, {
+                type: 'postback',
+                title: 'Muške',
+                payload: 'MEN_OPTION_SELECTED'
+              }
+            ]
+          }
+        }
+      };
+      postMessage(sender, message);
     });
 }
