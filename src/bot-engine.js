@@ -30,6 +30,8 @@ const handleIncomingMessage = (entries) => {
               
           //   });
           sendWelcomeMessage(sender);
+        } else if (payload === 'WOMEN_OPTION_SELECTED' || payload === 'MAN_OPTION_SELECTED') {
+          sendSizeOption(sender);
         }
 
       }
@@ -81,3 +83,23 @@ const sendWelcomeMessage = (sender) => {
       postMessage(sender, message);
     });
 }
+
+//Importujem store-api da bih dobio size opcije i na osnovu njih napravio dugmica
+const storeApi = require('./store-api');
+
+const sendSizeOptions = (sender) => {
+    const buttons = storeApi.getSizes.map(function (option) {
+        return {
+            content_type: 'text',
+            title: option.label,
+            payload: JSON.stringify({ size: option.value }) //postavljen je na JavaScript objekat sa key size i value - size option value 
+        }
+    });
+    const message = {
+        text: `Molimo Vas da odaberite željenu veličinu.`,
+        quick_replies: buttons
+    }
+    postMessage(sender, message);
+}
+
+
