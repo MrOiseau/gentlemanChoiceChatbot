@@ -30,8 +30,8 @@ const handleIncomingMessage = (entries) => {
               
           //   });
           sendWelcomeMessage(sender);
-        } else if (payload === 'WOMEN_OPTION_SELECTED' || payload === 'MAN_OPTION_SELECTED') {
-          sendSizeOption(sender);
+        } else if (payload === 'WOMEN_OPTION_SELECTED' || payload === 'MEN_OPTION_SELECTED') {
+          sendSizeOptions(sender);
         }
 
       }
