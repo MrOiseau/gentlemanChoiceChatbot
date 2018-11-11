@@ -19,6 +19,14 @@ const handleIncomingMessage = (entries) => {
   entries.forEach(function (entry) {
     entry.messaging.forEach(function (event) {
       let sender = event.sender.id
+
+      //da posalje poruku korisnicima sa listom proizvoda nakon selektovanja velicine majce
+      if (event.message) {
+        if (event.message.quick_reply) {  //ako primis messaging event sa quick_reply objektom
+         sendMatchingProducts(sender);
+        }
+      }
+
       if (event.postback) {
         const { payload } = event.postback;
         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
@@ -103,3 +111,35 @@ const sendSizeOptions = (sender) => {
 }
 
 
+
+const sendMatchingProducts = (sender) => {
+  storeApi.retriveProducts().then(response => {
+    const message = createProductList(response);
+    postMessage(sender, message);
+  });
+}
+
+function createProductList(products) {
+  const elements = products.map(product => {
+    return {
+      title: product.name,
+      subtitle: product.description,
+      image_url: product.imageUrl,
+      item_url: product.url,
+      buttons: [{
+        type: "web_url",
+        url: product.url,
+        title: "Kupi"
+      }],
+    }
+  });
+  return {
+    attachment: {
+      type: "template",
+      payload: {
+        template_type: "generic",
+        elements
+      }
+    }
+  };
+}
