@@ -6,7 +6,7 @@ const sizes = [
     { label: 'Extra Large', value: 'XL' }
   ];
   
-  const genders = [{ label: 'Muški', value: 'M' }, { label: 'Ženski', value: 'Ž' }]
+  const genders = [{ label: 'Muško', value: 'M' }, { label: 'Žensko', value: 'Ž' }]
   
   module.exports = {
     getSizes: sizes,

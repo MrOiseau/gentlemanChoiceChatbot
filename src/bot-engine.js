@@ -69,11 +69,11 @@ const sendWelcomeMessage = (sender) => {
             [
               {
                 type: 'postback',
-                title: 'Ženske',
+                title: 'Žensko',
                 payload: 'WOMEN_OPTION_SELECTED'
               }, {
                 type: 'postback',
-                title: 'Muške',
+                title: 'Muško',
                 payload: 'MEN_OPTION_SELECTED'
               }
             ]
