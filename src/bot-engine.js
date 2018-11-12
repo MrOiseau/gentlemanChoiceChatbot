@@ -21,33 +21,41 @@ const handleIncomingMessage = (entries) => {
       let sender = event.sender.id
 
       //da posalje poruku korisnicima sa listom proizvoda nakon selektovanja velicine majce
-      if (event.message) {
-        if (event.message.quick_reply) {  //ako primis messaging event sa quick_reply objektom
-         sendMatchingProducts(sender);
-        }
+      // // if (event.message) {
+      // //   if (event.message.quick_reply) {  //ako primis messaging event sa quick_reply objektom
+      // //    sendMatchingProducts(sender);
+      // //   }
+      // // }
+      if (event.message && event.message.quick_reply) {
+        handleQuickReplies(sender, event.message.quick_reply);
+      } else if (event.postback) {
+        handlePostback(sender, event.postback);
       }
-
-      if (event.postback) {
-        const { payload } = event.postback;
-        if (payload === 'GET_STARTED_BUTTON_CLICKED') {
-          // const userDetails = retrieveUserDetails(sender).
-          //   then(response => {
-          //     const firstName = response.data.first_name;
-          //     //postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
-          //     postMessage(sender, { text: `Zdravo ${firstName}, dobrodošli u našu prodavnicu!` });
-              
-          //   });
-          sendWelcomeMessage(sender);
-        } else if (payload === 'WOMEN_OPTION_SELECTED' || payload === 'MEN_OPTION_SELECTED') {
-          sendSizeOptions(sender);
-        }
-
-      }
-
     });
   });
-
 }
+
+// //       if (event.postback) {
+// //         const { payload } = event.postback;
+// //         if (payload === 'GET_STARTED_BUTTON_CLICKED') {
+// //           // const userDetails = retrieveUserDetails(sender).
+// //           //   then(response => {
+// //           //     const firstName = response.data.first_name;
+// //           //     //postMessage(sender, { text: 'Zdravo! Dobrodošli u našu prodavnicu!' });
+// //           //     postMessage(sender, { text: `Zdravo ${firstName}, dobrodošli u našu prodavnicu!` });
+              
+// //           //   });
+// //           sendWelcomeMessage(sender);
+// //         } else if (payload === 'WOMEN_OPTION_SELECTED' || payload === 'MEN_OPTION_SELECTED') {
+// //           sendSizeOptions(sender);
+// //         }
+
+// //       }
+
+// //     });
+// //   });
+
+// // }
 
 module.exports = {
   handleIncomingMessage
@@ -61,36 +69,36 @@ const retrieveUserDetails = (userId) => {
     });
 }
 
-//pravimo da welcome message bude strukturisana
-const sendWelcomeMessage = (sender) => {
-  const userDetails = retrieveUserDetails(sender).
-    then(response => {
-      const firstName = response.data.first_name;
-      const title = `Zdravo ${firstName}, dobrodošli u našu prodavnicu. Za šta ste zainteresovani danas?`;
-      const message = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'button',
-            text: title,
-            buttons:
-            [
-              {
-                type: 'postback',
-                title: 'Žensko',
-                payload: 'WOMEN_OPTION_SELECTED'
-              }, {
-                type: 'postback',
-                title: 'Muško',
-                payload: 'MEN_OPTION_SELECTED'
-              }
-            ]
-          }
-        }
-      };
-      postMessage(sender, message);
-    });
-}
+// // //pravimo da welcome message bude strukturisana
+// // const sendWelcomeMessage = (sender) => {
+// //   const userDetails = retrieveUserDetails(sender).
+// //     then(response => {
+// //       const firstName = response.data.first_name;
+// //       const title = `Zdravo ${firstName}, dobrodošli u našu prodavnicu. Za šta ste zainteresovani danas?`;
+// //       const message = {
+// //         attachment: {
+// //           type: 'template',
+// //           payload: {
+// //             template_type: 'button',
+// //             text: title,
+// //             buttons:
+// //             [
+// //               {
+// //                 type: 'postback',
+// //                 title: 'Žensko',
+// //                 payload: 'WOMEN_OPTION_SELECTED'
+// //               }, {
+// //                 type: 'postback',
+// //                 title: 'Muško',
+// //                 payload: 'MEN_OPTION_SELECTED'
+// //               }
+// //             ]
+// //           }
+// //         }
+// //       };
+// //       postMessage(sender, message);
+// //     });
+// // }
 
 //Importujem store-api da bih dobio size opcije i na osnovu njih napravio dugmica
 const storeApi = require('./store-api');
@@ -112,10 +120,18 @@ const sendSizeOptions = (sender) => {
 
 
 
-const sendMatchingProducts = (sender) => {
-  storeApi.retriveProducts().then(response => {
+// // const sendMatchingProducts = (sender) => {
+// //   storeApi.retriveProducts().then(response => {
+// //     const message = createProductList(response);
+// //     postMessage(sender, message);
+// //   });
+// // }
+const sendMatchingProducts = (sender, filter) => {
+  storeApi.retriveProducts(filter).then(response => {
     const message = createProductList(response);
-    postMessage(sender, message);
+    postMessage(sender, message).then((response) => {
+      showMessageToStartNewSearch(sender);
+    });
   });
 }
 
@@ -142,4 +158,88 @@ function createProductList(products) {
       }
     }
   };
+}
+
+
+
+//Sada moramo da ažuriramo naš bot engine da biste sačuvali opcije koje je 
+//izabrao korisnik, a zatim koristimo ove opcije da dobijemo 
+//odgovarajuće proizvode.
+//1
+const session = require('./session');
+
+//updateUserFilter f-ja preuzima podatke iz sesije korisnika, azurira ih 
+//novim podacima i cuva ih na nasem Redis serveru
+const updateUserFilter = (userId, newData) => {
+  return session.getData(userId).then((userData) => {
+    if (!userData) {
+      userData = { filter: {} };
+    }
+    userData.filter = Object.assign({}, userData.filter, newData);
+    session.setData(userId, userData);
+    return userData.filter;
+  });
+}
+
+//koristi updateUserFilter da sacuva selektovanu velicinu a onda prosledjuje
+//azurirani filter ili selektovani pol i velicinu do sendMatchingProducts f-je
+//sendMatchingProducts f-ja je azurirana da prosledi filter do storeApi retriveProducts f-je
+const handleQuickReplies = (sender, quickReply) => {
+  if (quickReply && quickReply.payload) {
+    const value = JSON.parse(quickReply.payload);
+    updateUserFilter(sender, value)
+      .then(filter => {
+        sendMatchingProducts(sender, filter);
+      });
+  }
+}
+
+//kada korisnik odabere pol, ova f-ja prosledjuje userId i primljeni payload
+//do updateUserFilter f-je da bi sacuvala selektovani pol u korisnickoj sesiji
+const handlePostback = (sender, postback) => {
+  const { payload } = postback;
+  if (payload === 'GET_STARTED_BUTTON_CLICKED') {
+    sendWelcomeMessage(sender);
+  } else {
+    const value = JSON.parse(payload);
+    updateUserFilter(sender, value)
+      .then(filter => {
+        sendSizeOptions(sender);
+      });
+  }
+}
+
+
+
+const sendWelcomeMessage = (sender) => {
+  const userDetails = retrieveUserDetails(sender).
+    then(response => {
+      const firstName = response.data.first_name;
+      const title = `Zdravo ${firstName}, dobrodošli u našu prodavnicu. Za šta ste zainteresovani danas?`;
+      postMessage(sender, buildButtonTemplateMessage(title, getGenderOptionButtons()));
+    });
+}
+
+const buildButtonTemplateMessage = (text, buttons) => {
+  return {
+    attachment: {
+      type: 'template',
+      payload: {
+        template_type: 'button',
+        text,
+        buttons
+      }
+    }
+  };
+}
+
+//da vrati listu postback dugmica za selektovani pol
+const getGenderOptionButtons = () => {
+  return storeApi.getGender.map(function (option) {
+    return {
+      type: 'postback',
+      title: option.label,
+      payload: JSON.stringify({ gender: option.value })
+    }
+  });
 }
