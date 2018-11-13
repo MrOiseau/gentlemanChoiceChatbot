@@ -45,8 +45,7 @@ const sizes = [
             url: `${GET_PRODUCTS_API_URL}/${product.id}`,
           });
         });
-      })
-      .catch(function (error) {
+      }).catch(function (error) {
         console.error('Vraćanje proizvoda je bezuspešno', error);
       });
   }
@@ -60,3 +59,4 @@ const sizes = [
 
 
 
+ 

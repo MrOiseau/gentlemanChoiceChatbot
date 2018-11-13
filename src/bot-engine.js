@@ -129,8 +129,10 @@ const sendSizeOptions = (sender) => {
 const sendMatchingProducts = (sender, filter) => {
   storeApi.retriveProducts(filter).then(response => {
     const message = createProductList(response);
+
     postMessage(sender, message).then((response) => {
-      showMessageToStartNewSearch(sender);
+      //showMessageToStartNewSearch(sender);
+      sendOptionToStartNewSearch(sender);
     });
   });
 }
@@ -200,6 +202,9 @@ const handlePostback = (sender, postback) => {
   const { payload } = postback;
   if (payload === 'GET_STARTED_BUTTON_CLICKED') {
     sendWelcomeMessage(sender);
+  } else if (payload === 'START_NEW_SEARCH') {
+    session.setData(sender, {});
+    postMessage(sender, buildButtonTemplateMessage('Šta je to što želite?', getGenderOptionButtons()));  
   } else {
     const value = JSON.parse(payload);
     updateUserFilter(sender, value)
@@ -244,3 +249,14 @@ const getGenderOptionButtons = () => {
   });
 }
 
+
+
+//valjda je ovde
+ const sendOptionToStartNewSearch = (sender) => {
+    const buttons = [{
+      type: 'postback',
+      title: 'Pronađi više majci',
+      payload: 'START_NEW_SEARCH'
+    }];
+    postMessage(sender, buildButtonTemplateMessage('Klikni ovde da bi započeo novu pretragu.', buttons));
+  }
