@@ -126,13 +126,19 @@ const sendSizeOptions = (sender) => {
 // //     postMessage(sender, message);
 // //   });
 // // }
+
+//šaljemo akciju tiping_on pre nego što pozovemo našu backend service 
+//za preuzimanje proizvoda, a zatim pošaljite akciju tiping_off kada dobijemo 
+//odgovor od service.
 const sendMatchingProducts = (sender, filter) => {
+  postSenderAction(sender, 'typing_on');
   storeApi.retriveProducts(filter).then(response => {
     const message = createProductList(response);
 
     postMessage(sender, message).then((response) => {
       //showMessageToStartNewSearch(sender);
       sendOptionToStartNewSearch(sender);
+      postSenderAction(sender, 'typing_off');
     });
   });
 }
@@ -255,10 +261,20 @@ const getGenderOptionButtons = () => {
  const sendOptionToStartNewSearch = (sender) => {
     const buttons = [{
       type: 'postback',
-      title: 'Pronađi više majci',
+      title: 'Pronađi još majci',
       payload: 'START_NEW_SEARCH'
     }];
     postMessage(sender, buildButtonTemplateMessage('Klikni ovde da bi započeo novu pretragu.', buttons));
   }
 
   
+
+//da svojim korisnicima pokažemo vizuelni indikator da obrađujemo njihov zahtev - kuca se itd.
+  const postSenderAction = (sender, action) => {
+    axios.post(FB_MESSENGER_URL, {
+      recipient: { id: sender },
+      sender_action: action 
+    }).catch(function (error) {
+      console.error('Onemogućeno postavljanje poruke na fejsbuk. ', error);
+    });
+  }
