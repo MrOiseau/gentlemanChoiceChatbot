@@ -32,7 +32,6 @@ app.set('view engine', 'handlebars');
 
 // Index route
 app.get('/', function (req, res) {
-  
     res.status(200).send('Zdravo! Ja sam četbot. Napiši mi nešto.')
 });
 
@@ -145,4 +144,18 @@ app.post('/webhook', function (req, res) {
 
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

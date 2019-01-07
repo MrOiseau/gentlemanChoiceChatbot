@@ -19,6 +19,7 @@
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
     "loadash": "^1.0.0",
+    "node-wit": "^5.0.0",
     "nodemon": "^1.18.5",
     "redis": "^2.8.0",
     "request": "^2.88.0",
